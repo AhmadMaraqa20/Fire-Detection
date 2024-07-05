@@ -1,8 +1,5 @@
 import streamlit as st
 import pandas as pd
-
-!pip install joblib 
-
 import joblib
 
 # Load the trained model
