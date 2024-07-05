@@ -3,7 +3,7 @@ import pandas as pd
 import joblib
 
 # Load the trained model
-model = joblib.load("C:/Users/HP/OneDrive/Desktop/work/AI portfolio/AI/DTC_model.pkl")
+model = joblib.load("DTC_model.pkl")
 
 
 import streamlit as st
