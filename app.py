@@ -1,14 +1,6 @@
 import streamlit as st
 import pandas as pd
 import joblib
-
-# Load the trained model
-model = joblib.load("DTC_model.pkl")
-
-
-import streamlit as st
-import pandas as pd
-import joblib
 import numpy as np
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures
@@ -22,6 +14,8 @@ from sklearn.preprocessing import FunctionTransformer
 from sklearn.model_selection import StratifiedShuffleSplit
 import tensorflow as tf
 
+# Load the trained model
+model = joblib.load("DTC_model.pkl")
 
 file_path = r"smoke_detection_iot.csv"
 data = pd.read_csv(file_path)
