@@ -27,10 +27,12 @@ file_path = r"smoke_detection_iot.csv"
 data = pd.read_csv(file_path)
 analysis_data = data.drop(data.columns.tolist()[:2], axis=1)
 
+
 def column_add(X):
     X["PM"] = X["PM1.0"] + X["PM2.5"]
     X["NC"] = X["NC0.5"] + X["NC1.0"] + X["NC2.5"]
     return X
+
 
 def remove_columns(X):
     X.drop(
@@ -39,6 +41,7 @@ def remove_columns(X):
         inplace=True,
     )
     return X
+
 
 combine_transformer = FunctionTransformer(column_add)
 remove_transformer = FunctionTransformer(remove_columns)
@@ -106,6 +109,8 @@ columns = [
     "CNT",
 ]
 
+values = [20, 50, 1942, 670, 12942, 19754, 938, 100, 184, 491, 203, 80, 10511]
+
 # Create a Streamlit app
 st.title("Fire Detection App")
 
@@ -114,8 +119,11 @@ st.header("Input Data")
 input_data = {}
 input_data["index_d"] = 10
 input_data["UTC"] = 10
+
+i = 0
 for col in columns:
-    input_data[col] = st.number_input(col, value=5.000 , step=10.000)
+    input_data[col] = st.number_input(col, value=values[i], step=1)
+    i = i + 1
 
 # Convert the input data into a DataFrame
 input_df = pd.DataFrame([input_data])
@@ -147,21 +155,22 @@ if st.button("Predict"):
     prediction_NN = model_NN.predict(input_preprocessed_df)
 
     predictions = {
-        'Logistic Regression ': prediction_LR,
-        'Decision Tree ': prediction_DTC,
-        'Random Forest ': prediction_RFC,
-        'Naive Bayes ': prediction_BC,
-        'Histogram Gradient Boosting ': prediction_HBC,
-        'Voting Classifier ': prediction_Vote,
-        'Neural Network ': prediction_NN
+        "Logistic Regression ": prediction_LR,
+        "Decision Tree ": prediction_DTC,
+        "Random Forest ": prediction_RFC,
+        "Naive Bayes ": prediction_BC,
+        "Histogram Gradient Boosting ": prediction_HBC,
+        "Voting Classifier ": prediction_Vote,
+        "Neural Network ": prediction_NN,
     }
 
     st.subheader("Predictions")
     for model_name, prediction in predictions.items():
-        result = "     Fire Detected" if prediction[0] >= 0.5 else "     No Fire"  # Adjust threshold as necessary
+        result = (
+            "     Fire Detected" if prediction[0] >= 0.5 else "     No Fire"
+        )  # Adjust threshold as necessary
         st.write(f"{model_name}: {result}")
 
 
 # cd C:\Users\HP\OneDrive\Desktop\work\AI portfolio\AI
 # streamlit run app.py
-
