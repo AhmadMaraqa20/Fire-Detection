@@ -183,7 +183,7 @@ if st.button("Predict"):
         result = (
             " Fire Detected" if prediction[0] >= 0.5 else " No Fire"
         )  # Adjust threshold as necessary
-        st.write(f" {model_name}:   {result}")
+        st.write(f" {model_name}:   {  result}")
 
 
 # cd C:\Users\HP\OneDrive\Desktop\work\AI portfolio\AI
