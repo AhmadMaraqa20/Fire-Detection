@@ -136,7 +136,7 @@ input_data["UTC"] = 10
 
 i = 0
 for col in columns:
-    input_data[col] = st.number_input(col, value=values[i], step=1.0)
+    input_data[col] = st.number_input(col, value=values[i], step=1.00)
     i = i + 1
 
 # Convert the input data into a DataFrame
