@@ -23,7 +23,7 @@ from sklearn.model_selection import StratifiedShuffleSplit
 import tensorflow as tf
 
 
-file_path = r"C:/Users/HP/OneDrive/Desktop/work/AI portfolio/AI/smoke_detection_iot.csv"
+file_path = r"smoke_detection_iot.csv"
 data = pd.read_csv(file_path)
 analysis_data = data.drop(data.columns.tolist()[:2], axis=1)
 
