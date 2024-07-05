@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-
 import joblib
 import numpy as np
 from sklearn.pipeline import Pipeline
@@ -16,18 +15,22 @@ from sklearn.model_selection import StratifiedShuffleSplit
 import tensorflow as tf
 
 # Load the trained model
-model = joblib.load("DTC_model.pkl")
+model_LR = joblib.load("LR_model.pkl")
+model_DTC = joblib.load("DTC_model.pkl")
+model_RFC = joblib.load("RFC_model.pkl")
+model_BC = joblib.load("BC_model.pkl")
+model_HBC = joblib.load("HBC_model.pkl")
+model_Vote = joblib.load("VOTE_model.pkl")
+model_NN = tf.keras.models.load_model("my_keras_model")
 
 file_path = r"smoke_detection_iot.csv"
 data = pd.read_csv(file_path)
 analysis_data = data.drop(data.columns.tolist()[:2], axis=1)
 
-
 def column_add(X):
     X["PM"] = X["PM1.0"] + X["PM2.5"]
     X["NC"] = X["NC0.5"] + X["NC1.0"] + X["NC2.5"]
     return X
-
 
 def remove_columns(X):
     X.drop(
@@ -36,7 +39,6 @@ def remove_columns(X):
         inplace=True,
     )
     return X
-
 
 combine_transformer = FunctionTransformer(column_add)
 remove_transformer = FunctionTransformer(remove_columns)
@@ -113,7 +115,7 @@ input_data = {}
 input_data["index_d"] = 10
 input_data["UTC"] = 10
 for col in columns:
-    input_data[col] = st.number_input(col, value=5.000)
+    input_data[col] = st.number_input(col, value=5.000 , step=10.000)
 
 # Convert the input data into a DataFrame
 input_df = pd.DataFrame([input_data])
@@ -136,13 +138,30 @@ st.write(input_df.iloc[:, 2:])
 
 # Make predictions
 if st.button("Predict"):
-    prediction = model.predict(input_preprocessed_df)
-    result = (
-        "Fire Detected" if prediction[0] >= 0.5 else "No Fire"
-    )  # Adjust threshold as necessary
-    st.subheader("Prediction")
-    st.write(result)
+    prediction_LR = model_LR.predict(input_preprocessed_df)
+    prediction_DTC = model_DTC.predict(input_preprocessed_df)
+    prediction_RFC = model_RFC.predict(input_preprocessed_df)
+    prediction_BC = model_BC.predict(input_preprocessed_df)
+    prediction_HBC = model_HBC.predict(input_preprocessed_df)
+    prediction_Vote = model_Vote.predict(input_preprocessed_df)
+    prediction_NN = model_NN.predict(input_preprocessed_df)
+
+    predictions = {
+        'Logistic Regression ': prediction_LR,
+        'Decision Tree ': prediction_DTC,
+        'Random Forest ': prediction_RFC,
+        'Naive Bayes ': prediction_BC,
+        'Histogram Gradient Boosting ': prediction_HBC,
+        'Voting Classifier ': prediction_Vote,
+        'Neural Network ': prediction_NN
+    }
+
+    st.subheader("Predictions")
+    for model_name, prediction in predictions.items():
+        result = "     Fire Detected" if prediction[0] >= 0.5 else "     No Fire"  # Adjust threshold as necessary
+        st.write(f"{model_name}: {result}")
 
 
 # cd C:\Users\HP\OneDrive\Desktop\work\AI portfolio\AI
 # streamlit run app.py
+
