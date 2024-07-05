@@ -183,7 +183,7 @@ if st.button("Predict"):
         result = (
             " Fire Detected" if prediction[0] >= 0.5 else " No Fire"
         )  # Adjust threshold as necessary
-        st.write(f"{model_name}: {' ' * 5}{result}")
+        st.write(f"{model_name}: {'   ' * 5}{result}")
 
 
 
