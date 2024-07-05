@@ -124,6 +124,7 @@ values = [
     0.011,
     7667,
 ]
+
 # Create a Streamlit app
 st.title("Fire Detection App")
 
