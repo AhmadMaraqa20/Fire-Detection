@@ -139,7 +139,6 @@ for col in columns:
     input_data[col] = st.number_input(col, value=values[i], step=1.00)
     i = i + 1
 
-# Convert the input data into a DataFrame
 input_df = pd.DataFrame([input_data])
 
 # Preprocess the input data
@@ -153,7 +152,7 @@ if "F1" in input_preprocessed_df.columns:
     input_preprocessed_df.drop("F1", axis=1, inplace=True)
 
 # Display the input DataFrame
-st.subheader("Input DataFrame")
+st.subheader("Input Data")
 input_df.index = ["data"]
 st.write(input_df.iloc[:, 2:])
 
